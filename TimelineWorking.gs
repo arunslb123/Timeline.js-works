@@ -15,7 +15,10 @@ function doGet(request){
   var ss = SpreadsheetApp.openById(ScriptProperties.getProperty('active'));
   var sheet = ss.getSheetByName("Gopi");
   ss.setActiveSheet(sheet);
+ // var passedInput=request.parameter.theArg;
+  //Logger.log(passedInput);
   var outputJson= makeTask();  
+  Logger.log(outputJson);
   return outputJson;
   //makeJson();
 }
@@ -32,7 +35,7 @@ function makeTask(){
 //now I just hard coded the values
 // var task=getTask();
   var task=[6,11,16];
- var outputJson= getData(task);
+  var outputJson= getData(task);
   Logger.log(outputJson);
   return outputJson;
 }
@@ -60,7 +63,7 @@ function getData(task){
   var sheet = ss.getSheetByName("Gopi");
   ss.setActiveSheet(sheet);
   var data = sheet.getDataRange().getValues();
-  var startFormat=['Begin Date','Task','End Date'];
+  var startFormat=['Begin Date','Task','End Date','Text'];
   var allData=[];
   allData.push(startFormat);
   
@@ -74,11 +77,8 @@ function getData(task){
         singleData.push(newDate);
         singleData.push(data[i][j]);
         singleData.push(newDate);
+        singleData.push(data[i][j]);
         allData.push(singleData);
-       
-      
-         // Logger.log('Start Date: '+newDate);
-       //   Logger.log('Task: '+data[i][j] );
         
       }
     }
@@ -95,30 +95,32 @@ function generateFinalJson(data){
   var jsonObj = function(timeline){
   this.timeline=timeline;
     }
-  var timelineObj = function (headline,date, era)
+  var timelineObj = function (headline,type,date, era,text)
     {
         this.headline=headline;
-      //  this.type=type;
-       // this.text=text;
+        this.type=type;
+        this.text=text;
         this.date=date;
         this.era=era;
     }
   var dates= new Array();
 
-  var dateObj =  function(startDate, endDate, headline)
+  var dateObj =  function(startDate, endDate, headline,text)
             {
                 this.startDate=startDate;
                 this.endDate=endDate;
                 this.headline=headline;
+                this.text=text;
             }
 
   var eras = new Array();
 
-  var eraObj= function(startDate, endDate, headline)
+  var eraObj= function(startDate, endDate, headline,text)
     {
             this.startDate=startDate;
             this.endDate=endDate;
             this.headline=headline;
+            this.text=text;
         }
   
    //get position of an element from the data array
@@ -126,29 +128,26 @@ function generateFinalJson(data){
    var colHeaders = data[0]; // reading header row
    return colHeaders.indexOf(el) //return position of el
     }
-   // Logger.log(data);
 
     for (var i=1; i<data.length; i++){
         beginDate=data[i][pos('Begin Date')];
         endDate=data[i][pos('End Date')];
         headline=data[i][pos('Task')];
-       // text=data[i][pos('Food')];
-     //   tag=data[i][pos('Qty')];
-        var projectDate = new dateObj(beginDate,endDate,headline);
+        text=data[i][pos('Text')];
+        var projectDate = new dateObj(beginDate,endDate,headline,text);
         dates.push(projectDate);
     }
 //  Logger.log(dates);
 
-    var swEra = new eraObj('2000','2020','era headline');
+    var swEra = new eraObj('2000','2020','era headline','era text');
     eras.push(swEra);
 
     //build json obj
-    var swTimeline = new timelineObj('A New Timeline',dates,eras);
+    var swTimeline = new timelineObj('A New Timeline','default',dates,eras,'Text');
     var jsonTimeline = new jsonObj(swTimeline);
-  // var jsonTimeline = JSON.stringify(jsonTimeline);
-   // Logger.log(jsonTimeline);
-    //loadData(json);
+    Logger.log(jsonTimeline);
     var outputJson = ContentService.createTextOutput(JSON.stringify(jsonTimeline)).setMimeType(ContentService.MimeType.JSON);
+  
     return outputJson;
 }
 
@@ -164,7 +163,7 @@ This function converts the entrayn format date to timeline.js date format.
 */
 
 function formatDate(oldFormat){
-  var formattedDate = Utilities.formatDate(oldFormat, "IST", "MM-dd-yyyy");
+  var formattedDate = Utilities.formatDate(oldFormat, "IST", "MM/dd/yyyy");
   if(formattedDate[0]==='0'){
    formattedDate= formattedDate.slice(1,formattedDate.length+1);
   }
