@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Time Line Demo</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- always load the CSS --> <link rel="stylesheet" type="text/css" href="timeline/build/css/timeline.css"> <script type="text/javascript" src="timeline/build/js/timeline.js"></script> <!-- or --> <script type="text/javascript" src="timeline/build/js/timeline-min.js"></script> <!-- but no need for both -->
+    <link rel="stylesheet" type="text/css" href="timeline/build/css/style.css">
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+     <!-- jQuery -->
+
+        <!-- BEGIN TimelineJS -->
+<script type="text/javascript" src="timeline/build/js/storyjs-embed.js"></script>
+        <script>
+            jQuery(document).ready(function() {
+                createStoryJS({
+                    type:       'timeline',
+                    width:      '1250',
+                    height:     '240',
+                    source:     'https://script.google.com/macros/s/AKfycbwMW1HqpVfoCjJpq6X6eLf8X7FjUgMSW_9TmqRgTSMY92wLGSYj/exec',
+                    embed_id:   'my-timeline'
+                });
+            });
+        </script>
+        <!-- END TimelineJS -->
+  </head>
+  <body>
+    <h1>&nbsp;Time Line Demo!</h1>
+    &nbsp;<div class="row">
+    &nbsp;<button type="button" class="btn btn-primary">One Month Plan</button>
+    &nbsp;<button type="button" class="btn btn-primary">Three Months Plan</button>
+    &nbsp;<button type="button" class="btn btn-primary">Six Months plan</button>
+    </div>
+<div id="my-timeline"></div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
